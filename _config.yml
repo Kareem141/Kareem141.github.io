@@ -14,19 +14,19 @@ timezone:
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Chirpy # the main title
+title: Kareem Ayman # the main title
 
-tagline: A text-focused Jekyll theme # it will display as the subtitle
+tagline: Linux+ | SOC Analyst | Top 2% on THM # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
-  A minimal, responsive and feature-rich Jekyll theme for technical writing.
+  Welcome to my GitHub page! I’m a SOC Analyst passionate about threat detection, incident response, and security automation. Explore my repositories for tools, scripts, and resources to enhance your cybersecurity workflows.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
 url: "https://Kareem141.github.io"
 
 github:
-  username: github_username # change to your GitHub username
+  username: Kareem141 # change to your GitHub username
 
 twitter:
   username: twitter_username # change to your Twitter username
@@ -98,7 +98,7 @@ theme_mode: # [light | dark]
 cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar:
+avatar: https://media.licdn.com/dms/image/v2/D4D03AQGaZxO4IbC4yA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1721914784403?e=1756944000&v=beta&t=HycuJgRyoTipP-mUZr8dMOd89IYMbRCpIs45HCNfk-Q
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
