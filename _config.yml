@@ -28,8 +28,8 @@ url: "https://Kareem141.github.io"
 github:
   username: Kareem141 # change to your GitHub username
 
-twitter:
-  username: twitter_username # change to your Twitter username
+#twitter:
+  #username: twitter_username # change to your Twitter username
 
 linkedin:
   username: kareem-ayman-19762829a # change to your LinkedIn username
@@ -41,7 +41,7 @@ social:
   email: example@domain.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/username # change to your Twitter homepage
+    # https://twitter.com/username # change to your Twitter homepage
     - https://github.com/username # change to your GitHub homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
