@@ -1,8 +1,8 @@
 ---
 title: 2025-01-22-TRAFFICANALYSISEXERCISE Writeup
 date: 2025-08-02 03:30:30 +0200
-categories: [traffic_analysis, 2025-01-22-TRAFFICANALYSISEXERCISE]
-tags: [wireshark, PCAP]
+categories: [Traffic Analysis]
+tags: [wireshark, pcap]
 description: analyzing PCAP file using wireshark.
 ---
 # Local IP Addresses

@@ -227,21 +227,25 @@ main {
 
 /* --- Begin of Markdown table style --- */
 
-/* it will be created by Liquid */
 .table-wrapper {
-  overflow-x: auto;
   margin-bottom: 1.5rem;
+  overflow: hidden; /* prevent any accidental overflow */
 
   > table {
-    min-width: 100%;
-    overflow-x: auto;
+    width: 100%;                    /* take full available width */
+    max-width: 100%;                /* never exceed container */
+    table-layout: auto;             /* let columns size naturally */
     border-spacing: 0;
+    border-collapse: collapse;     /* cleaner look */
 
     thead {
       border-bottom: solid 2px rgba(210, 215, 217, 0.75);
 
       th {
         @extend %table-cell;
+        white-space: normal;      /* allow wrapping in headers */
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
     }
 
@@ -259,8 +263,12 @@ main {
 
         td {
           @extend %table-cell;
+          white-space: normal;      /* allow text to wrap */
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          hyphens: auto;            /* optional: better line breaks */
         }
       }
-    } /* tbody */
-  } /* table */
+    }
+  }
 }

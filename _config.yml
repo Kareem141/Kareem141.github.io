@@ -16,7 +16,7 @@ timezone: Africa/Cairo
 
 title: Kareem Ayman # the main title
 
-tagline: Linux+ | SOC Analyst | Top 2% on THM # it will display as the subtitle
+tagline: SOC Analyst | Top 1% on THM # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   Welcome to my GitHub page! I’m a SOC Analyst passionate about threat detection, incident response, and security automation. Explore my repositories for tools, scripts, and resources to enhance your cybersecurity workflows.
@@ -101,7 +101,7 @@ theme_mode: # [light | dark]
 cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: https://media.licdn.com/dms/image/v2/D4D03AQGaZxO4IbC4yA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1721914784403?e=1756944000&v=beta&t=HycuJgRyoTipP-mUZr8dMOd89IYMbRCpIs45HCNfk-Q
+avatar: /assets/img/gpth.jpg
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
