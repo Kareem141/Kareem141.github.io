@@ -12,8 +12,8 @@ $search-max-width: 200px !default;
 $footer-height: 5rem !default;
 $footer-height-large: 6rem !default; /* screen width: < 850px */
 $main-content-max-width: 1250px !default;
-$radius-sm: 6px !default;
-$radius-lg: 10px !default;
+$radius-sm: 8px !default;
+$radius-lg: 16px !default;
 $back2top-size: 2.75rem !default;
 
 /* syntax highlight */
@@ -26,5 +26,5 @@ $code-icon-width: 1.75rem !default;
 
 /* fonts */
 
-$font-family-base: 'Source Sans Pro', 'Microsoft Yahei', sans-serif !default;
-$font-family-heading: Lato, 'Microsoft Yahei', sans-serif !default;
+$font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !default;
+$font-family-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !default;

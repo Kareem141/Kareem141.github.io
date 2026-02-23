@@ -6,6 +6,8 @@
 #topbar-wrapper {
   height: v.$topbar-height;
   background-color: var(--topbar-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   @include bp.lt(bp.get(lg)) {
     @include mx.slide(top 0.2s ease);

@@ -95,6 +95,7 @@ main {
   border: 0;
   background: var(--card-bg);
   box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &::before {
     @extend %rounded;
@@ -109,6 +110,9 @@ main {
   }
 
   &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    
     &::before {
       opacity: 0.3;
     }
