@@ -14,7 +14,7 @@
 
       {% if share.type == 'Mastodon' %}
         <script defer type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/share-to-mastodon/+esm"></script>
-        <button class="btn text-start" {{ tooltip }}>
+        <button class="btn text-start share-button share-mastodon-button" {{ tooltip }}>
           <share-to-mastodon
             class="share-mastodon"
             message="{{ title }}"
@@ -32,7 +32,7 @@
 
       {% assign link = share.link | replace: 'TITLE', title | replace: 'URL', url %}
 
-      <a href="{{ link }}" target="_blank" rel="noopener" {{ tooltip }}>
+      <a class="share-button share-{{ share.type | downcase | replace: ' ', '-' }}" href="{{ link }}" target="_blank" rel="noopener" {{ tooltip }}>
         <i class="fa-fw {{ share.icon }}"></i>
       </a>
     {% endfor %}
@@ -40,7 +40,7 @@
     <button
       id="copy-link"
       aria-label="Copy link"
-      class="btn small"
+      class="btn small share-button share-copy"
       data-bs-toggle="tooltip"
       data-bs-placement="top"
       title="{{ site.data.locales[include.lang].post.button.share_link.title }}"

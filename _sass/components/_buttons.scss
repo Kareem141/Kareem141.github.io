@@ -9,14 +9,20 @@
   position: fixed;
   right: 1rem;
   bottom: calc(v.$footer-height-large - v.$back2top-size / 2);
-  background: var(--button-bg);
-  color: var(--btn-backtotop-color);
-  padding: 0;
-  width: v.$back2top-size;
-  height: v.$back2top-size;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: 1px solid var(--btn-backtotop-border-color);
-  transition: opacity 0.5s ease-in-out, transform 0.2s ease-out;
+  background-color: var(--surface-strong-color);
+  border: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color) 25%, transparent);
+  overflow: hidden;
+  padding: 0;
+  transition: opacity 0.5s ease-in-out, width 0.3s, border-radius 0.3s,
+    background-color 0.3s, transform 0.2s ease-out;
 
   @include bp.lg {
     right: 5%;
@@ -33,15 +39,39 @@
     );
   }
 
-  &:hover {
-    transform: translate3d(0, -5px, 0);
-    -webkit-transform: translate3d(0, -5px, 0);
+  .svgIcon {
+    width: 12px;
+    transition-duration: 0.3s;
+
+    path {
+      fill: var(--btn-backtotop-color);
+    }
   }
 
-  i {
-    line-height: v.$back2top-size;
-    position: relative;
-    bottom: 2px;
+  &:hover {
+    width: 140px;
+    border-radius: 50px;
+    background-color: var(--accent-color);
+    transform: translate3d(0, -5px, 0);
+
+    .svgIcon {
+      transform: translateY(-200%);
+    }
+  }
+
+  &::before {
+    position: absolute;
+    bottom: -20px;
+    content: 'Back to Top';
+    color: var(--on-accent-color);
+    font-size: 0;
+  }
+
+  &:hover::before {
+    font-size: 13px;
+    opacity: 1;
+    bottom: unset;
+    transition-duration: 0.3s;
   }
 
   &.show {

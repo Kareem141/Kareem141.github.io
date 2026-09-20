@@ -53,7 +53,6 @@ header {
 
   .license-wrapper {
     line-height: 1.2rem;
-
     > a {
       @extend %text-highlight;
 
@@ -84,6 +83,9 @@ header {
 
     .share-icons {
       display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem;
 
       i {
         color: var(--btn-share-color);
@@ -94,13 +96,93 @@ header {
       > * {
         @extend %icon-size;
 
-        margin-left: 0.5rem;
+        margin-left: 0;
 
         &:hover {
           i {
-            @extend %btn-share-hover;
+            color: var(--on-accent-color);
           }
         }
+      }
+
+      .share-button {
+        position: relative;
+        z-index: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        overflow: hidden;
+        border: none;
+        border-radius: 50%;
+        background: linear-gradient(120deg, var(--accent-color), var(--accent-highlight-color));
+        cursor: pointer;
+        transition: 0.1s;
+
+        &::before {
+          content: '';
+          position: absolute;
+          z-index: -1;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background-color: var(--surface-strong-color);
+          transition: 0.4s;
+        }
+
+        &:hover::before,
+        &:focus-visible::before {
+          width: 0;
+          height: 0;
+        }
+
+        &:active {
+          transform: scale(0.85);
+        }
+
+        svg {
+          z-index: 1;
+          width: 18px;
+          height: 18px;
+          color: var(--btn-share-color);
+          font-size: 1rem;
+        }
+
+        i {
+          z-index: 1;
+          color: var(--btn-share-color);
+        }
+
+        &:hover,
+        &:focus-visible {
+          svg,
+          i {
+            color: var(--on-accent-color);
+          }
+        }
+      }
+
+      .share-facebook,
+      .share-telegram {
+        background: var(--accent-color);
+      }
+
+      .share-linkedin {
+        background: var(--accent-strong-color);
+      }
+
+      .share-mastodon-button {
+        background: var(--accent-highlight-color);
+      }
+
+      .share-weibo {
+        background: var(--danger-color);
+      }
+
+      .share-copy {
+        background: var(--surface-strong-color);
       }
 
       button {
@@ -132,8 +214,8 @@ header {
   --wc-stm-form-button-border: 1px solid var(--btn-border-color);
   --wc-stm-form-submit-background-color: var(--sidebar-btn-bg);
   --wc-stm-form-cancel-background-color: var(--sidebar-btn-bg);
-  --wc-stm-form-button-background-color-hover: #007bff;
-  --wc-stm-form-button-color-hover: white;
+  --wc-stm-form-button-background-color-hover: var(--accent-color);
+  --wc-stm-form-button-color-hover: var(--on-accent-color);
 
   font-size: 1rem;
 }
@@ -163,7 +245,7 @@ header {
 
     &:hover {
       &:not(.disabled)::before {
-        color: whitesmoke;
+        color: var(--on-accent-color);
       }
     }
 
@@ -278,13 +360,31 @@ header {
     /* Overwrite TOC plugin style */
 
     .toc-link {
-      display: block;
+      display: inline-block;
+      max-width: 100%;
+      position: relative;
+      transition: color 0.3s ease-out;
 
       @extend %text-ellipsis;
 
       &:hover {
         color: var(--toc-highlight);
         text-decoration: none;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0.15rem;
+        width: 0;
+        height: 2px;
+        background: var(--toc-highlight);
+        transition: width 0.3s ease-out;
+      }
+
+      &:hover::after {
+        width: 100%;
       }
 
       &::before {

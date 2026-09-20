@@ -15,7 +15,7 @@
 
     /* dot */
     &::before {
-      background: #999999;
+      background: var(--accent-color);
       width: 5px;
       height: 5px;
       border-radius: 50%;
@@ -34,7 +34,33 @@
     > a {
       @extend %no-bottom-border;
 
+      position: relative;
+      display: inline-block;
       font-size: 1.1rem;
+      transition: color 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+
+      &::after {
+        content: '';
+        pointer-events: none;
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background-color: currentColor;
+        transition: width 400ms cubic-bezier(0.25, 0.8, 0.25, 1),
+          left 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+
+      &:hover,
+      &:focus-visible {
+        border-bottom: none;
+
+        &::after {
+          left: 0;
+          width: 100%;
+        }
+      }
 
       @include bp.lt(bp.get(sm)) {
         @include mx.text-ellipsis;

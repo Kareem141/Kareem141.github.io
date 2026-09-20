@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "scripts": {
+    "build:liquid-ether": "vite build"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "three": "^0.180.0",
+    "vite": "latest"
+  },
+  "devDependencies": {}
+}

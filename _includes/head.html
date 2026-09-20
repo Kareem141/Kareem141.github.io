@@ -75,6 +75,7 @@
 
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ '/assets/css/:THEME.css' | replace: ':THEME', site.theme | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/js/liquid-ether.css' | relative_url }}">
 
   <!-- Web Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,6 +103,7 @@
   <!-- Scripts -->
 
   <script src="{{ '/assets/js/dist/theme.min.js' | relative_url }}"></script>
+  <script type="module" defer src="{{ '/assets/js/liquid-ether.js' | relative_url }}"></script>
 
   {% include js-selector.html lang=lang %}
 

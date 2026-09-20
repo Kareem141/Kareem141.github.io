@@ -23,7 +23,7 @@
   }
 
   .content {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -37,11 +37,41 @@
   }
 
   .post-tag {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
     line-height: 1.05rem;
     font-size: 0.85rem;
     border-radius: 0.8rem;
     padding: 0.3rem 0.5rem;
     margin: 0 0.35rem 0.5rem 0;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: var(--accent-color);
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    &:hover {
+      color: var(--on-accent-color);
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-color) 38%, transparent);
+
+      &::after {
+        width: 150px;
+        height: 150px;
+        opacity: 1;
+      }
+    }
 
     &:hover {
       transition: all 0.3s ease-in;
@@ -59,10 +89,38 @@
 
 #access-lastmod {
   a {
+    display: inline-block;
+    position: relative;
+    border: none;
+    background: none;
     color: inherit;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-transform: none;
+    transition: color 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
 
-    &:hover {
-      @extend %link-hover;
+    &::after {
+      content: '';
+      pointer-events: none;
+      position: absolute;
+      bottom: 1px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background-color: currentColor;
+      transition: width 400ms cubic-bezier(0.25, 0.8, 0.25, 1),
+        left 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--link-color);
+
+      &::after {
+        left: 0;
+        width: 100%;
+      }
     }
 
     @extend %no-bottom-border;

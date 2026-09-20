@@ -51,6 +51,9 @@ refactor: true
   {% for post in posts %}
     <article class="card-wrapper card">
       <a href="{{ post.url | relative_url }}" class="post-preview row g-0 flex-md-row-reverse">
+        <div class="go-corner" aria-hidden="true">
+          <div class="go-arrow">&#8594;</div>
+        </div>
         {% assign card_body_col = '12' %}
 
         {% if post.image %}

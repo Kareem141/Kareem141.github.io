@@ -35,6 +35,180 @@ search {
   }
 }
 
+.ask-ai-wrapper {
+  display: inline-block;
+  width: 280px;
+  position: relative;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+
+  @include bp.lt(bp.get(lg)) {
+    display: none;
+  }
+
+  .ai-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--surface-color);
+    border: 2px solid var(--btn-border-color);
+    border-radius: 12px;
+    padding: 10px 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+    transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  #search-input.ai-input {
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    padding: 6px 10px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text-color);
+    font-family: sans-serif;
+    font-size: 1rem;
+    transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:focus {
+      color: var(--accent-highlight-color);
+      box-shadow: none;
+    }
+
+    &::placeholder {
+      color: var(--text-muted-color);
+      font-style: italic;
+    }
+  }
+
+  .icon-container {
+    position: relative;
+    z-index: 2;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.7, -0.5, 0.3, 1.5);
+  }
+
+  .ai-icon {
+    width: 24px;
+    height: 24px;
+
+    path {
+      fill: var(--text-muted-color);
+      transform-origin: center;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  .underline-effect {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 0;
+    height: 2px;
+    background: var(--accent-highlight-color);
+    transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  .ripple-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent-highlight-color) 20%, transparent);
+    transform: translate(-50%, -50%);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .floating-dots {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+
+    span {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--accent-highlight-color);
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.7, -0.5, 0.3, 1.5);
+
+      &:nth-child(1) { --x: 10px; --y: 10px; animation-delay: 0s; }
+      &:nth-child(2) { --x: -5px; --y: 5px; animation-delay: 0.2s; }
+      &:nth-child(3) { --x: 15px; --y: 0px; animation-delay: 0.4s; }
+      &:nth-child(4) { --x: -10px; --y: 15px; animation-delay: 0.6s; }
+    }
+  }
+
+  .bg-fade {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--accent-highlight-color) 5%, transparent), color-mix(in srgb, var(--accent-highlight-color) 10%, transparent));
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  .ai-input-container:hover,
+  &:focus-within .ai-input-container {
+    border-color: var(--accent-highlight-color);
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--accent-highlight-color) 30%, transparent);
+    transform: translateY(-4px);
+
+    .icon-container {
+      transform: translateY(-2px) scale(1.1);
+    }
+
+    .ai-icon path {
+      fill: var(--accent-highlight-color);
+      transform: scale(1.1) rotate(5deg);
+      animation: gentle-bounce 0.5s infinite alternate cubic-bezier(0.7, -0.5, 0.3, 1.5);
+    }
+
+    .underline-effect {
+      width: 100%;
+    }
+
+    .ripple-circle {
+      width: 200px;
+      height: 200px;
+    }
+
+    .floating-dots span {
+      opacity: 1;
+      animation: float-up 1.2s infinite cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .bg-fade {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes gentle-bounce {
+  0% { transform: scale(1.1) translateY(1px); }
+  100% { transform: scale(1.1) translateY(-1px); }
+}
+
+@keyframes float-up {
+  0% { transform: translate(var(--x), var(--y)) scale(1); opacity: 0; }
+  50% { transform: translate(var(--x), calc(var(--y) - 15px)) scale(1.3); opacity: 1; }
+  100% { transform: translate(var(--x), calc(var(--y) - 30px)) scale(1); opacity: 0; }
+}
+
 #search-result-wrapper {
   display: none;
   height: 100%;

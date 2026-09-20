@@ -56,7 +56,7 @@
       border: 3px solid;
       background-color: var(--timeline-year-dot-color);
       border-color: var(--timeline-node-bg);
-      box-shadow: 0 0 2px 0 #c2c6cc;
+      box-shadow: 0 0 2px 0 var(--timeline-node-bg);
       z-index: 1;
     }
   }
@@ -72,11 +72,11 @@
         background-color: var(--main-bg, #ffffff);
         background-image: linear-gradient(
           to left,
-          #ffffff,
-          #fbfbfb,
-          #fbfbfb,
-          #fbfbfb,
-          #ffffff
+          var(--surface-strong-color),
+          var(--surface-color),
+          var(--surface-color),
+          var(--surface-color),
+          var(--surface-strong-color)
         );
       }
 
@@ -133,7 +133,7 @@
       top: 1.35rem;
       left: 71px;
       background-color: var(--timeline-node-bg);
-      box-shadow: 0 0 3px 0 #c2c6cc;
+      box-shadow: 0 0 3px 0 var(--timeline-node-bg);
       z-index: 1;
     }
   }
